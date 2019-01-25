@@ -1,1 +1,56 @@
 总结问题：
+1. 在APP.vue 里面用了
+包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们
+<keep-alive>
+    <router-view v-if="$route.meta.keepAlive"></router-view>
+</keep-alive>
+<router-view v-if="!$route.meta.keepAlive"></router-view>
+在router.js里面用了
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'Hello',
+      component: Hello,
+      meta: {
+        keepAlive: false // 不需要缓存
+      }
+    },
+    {
+      path: '/page1',
+      name: 'Page1',
+      component: Page1,
+      meta: {
+        keepAlive: true // 需要被缓存
+      }
+    }
+  ]
+})
+
+2. 在main.js里面用了
+就是直接引入就可以了
+import FastClick from 'fastclick'
+ 原理: 在检测到touchend事件的时候，会通过DOM自定义事件立即出发模拟一个click事件，并把浏览器在300ms之后真正的click事件阻止掉
+  缺点: 脚本相对较大
+没使用jquery得时候
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+        FastClick.attach(document.body);
+    }, false);
+}
+
+在vue中使用????```js? 
+??// 安装? ? npm install fastclick -S?
+? // 引入? ? import FastClick from 'fastclick'? 
+? // 使用? ? FastClick.attach(document.body);? ?
+
+为啥要使用  
+移动设备上的浏览器默认会在用户点击屏幕大约延迟300毫秒后才会触发点击事件，
+这是为了检查用户是否在做双击。为了能够立即响应用户的点击事件，才有了FastClick。
+
+3.mapMutations这个是vuex里面得
+  ...mapMutations([
+                'RECORD_USERINFO',
+            ]),
+你可以在组件中使用 this.$store.commit('xxx') 提交 mutation，
+或者使用 mapMutations 辅助函数将组件中的 methods 映射为 store.commit 调用（需要在根节点注入 store）。
