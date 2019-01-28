@@ -1,103 +1,246 @@
 总结问题：
+
 1. 在APP.vue 里面用了
+
 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们
+
 <keep-alive>
+
     <router-view v-if="$route.meta.keepAlive"></router-view>
+
 </keep-alive>
+
 <router-view v-if="!$route.meta.keepAlive"></router-view>
+
 在router.js里面用了
+
 export default new Router({
+
   routes: [
+
     {
+
       path: '/',
+
       name: 'Hello',
+
       component: Hello,
+
       meta: {
+
         keepAlive: false // 不需要缓存
+
       }
+
     },
+
     {
+
       path: '/page1',
+
       name: 'Page1',
+
       component: Page1,
+
       meta: {
+
         keepAlive: true // 需要被缓存
+
       }
+
     }
+
   ]
+
 })
 
+
+
 2. 在main.js里面用了
+
 就是直接引入就可以了
+
 import FastClick from 'fastclick'
+
  原理: 在检测到touchend事件的时候，会通过DOM自定义事件立即出发模拟一个click事件，
+
 并把浏览器在300ms之后真正的click事件阻止掉
+
   缺点: 脚本相对较大
+
 没使用jquery得时候
+
 if ('addEventListener' in document) {
+
     document.addEventListener('DOMContentLoaded', function() {
+
         FastClick.attach(document.body);
+
     }, false);
+
 }
 
+
+
 在vue中使用????```js? 
+
 ??// 安装? ? npm install fastclick -S?
+
 ? // 引入? ? import FastClick from 'fastclick'? 
+
 ? // 使用? ? FastClick.attach(document.body);? ?
 
+
+
 为啥要使用  
+
 移动设备上的浏览器默认会在用户点击屏幕大约延迟300毫秒后才会触发点击事件，
+
 这是为了检查用户是否在做双击。为了能够立即响应用户的点击事件，才有了FastClick。
 
+
+
 3.mapMutations这个是vuex里面得
+
   ...mapMutations([
+
                 'RECORD_USERINFO',
+
             ]),
+
 你可以在组件中使用 this.$store.commit('xxx') 提交 mutation，
+
 或者使用 mapMutations 辅助函数将组件中的 methods 映射为 store.commit 调用（需要在根节点注入 store）。
 
 
+
+
+
 4.Fetch发送数据
+
 使用Fetch发送也很简单，只需要配置三个参数。
+
 fetch('some-url', options);
+
 第一个参数是设置请求方法（如post、put或del），Fetch会自动设置方法为get。
+
+
 
 第二个参数是设置头部。因为一般使用JSON数据格式，所以设置ContentType为application/json。
 
+
+
 第三个参数是设置包含JSON内容的主体。因为JSON内容是必须的，所以当设置主体时会调用JSON.stringify。
+
 Fetch处理异常
+
 虽然希望Ajax响应成功，但是仍会有问题出现：
 
+
+
 可能尝试获取不存在的资源
+
 a没有权限获取资源
+
 b输入参数有误
+
 c服务器抛出异常
+
 d服务器超时
+
 e服务器崩溃
+
 API更改
 
+
+
 5.Ajax请求中的async:false/true的作用
+
 async. 默认是true，即为异步方式，$.Ajax执行后，会继续执行ajax后面的脚本，
+
 直到服务器端返回数据后，触发$.Ajax里的success方法，这时候执行的是两个线程。
+
 若要将其设置为false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
+
 用户其它操作必须等待请求完成才可以执行。
+
 async其实是ES7的才有的关键字 就是异步得意思
+
 async function helloAsync(){
+
     return "helloAsync";
+
   }
+
   console.log(helloAsync())//Promise {<resolved>: "helloAsync"}
+
 申明async方法比较简单，只需要在普通的函数前加上"async"关键字即可。
+
 我们执行下这个函数，发现并没有返回字符串"helloAsync",
+
 而是通过Promise.resolved()将字符串封装成了一个Promise对象返回。
 
 ?
+
  ?既然是返回的Promise对象，我们就是用then方法来处理。
+
 async function helloAsync(){
+
  
+
   	return "helloAsync";
+
  
+
   }
+
   helloAsync().then(v=>{
+
      console.log(v);//"helloAsync"
+
   })
 
+
+
+
+
+6.xlink:href属性像参考<IRI>一样定义到了资源的链接
+
+xlink:href属性是可以动画的
+
+
+
+7.svg
+
+使用 <embed> 标签
+
+<embed src="circle1.svg" type="image/svg+xml" />
+
+使用 <object> 标签
+
+<object data="circle1.svg" type="image/svg+xml"></object>
+
+使用 <iframe> 标签
+
+<iframe src="circle1.svg"></iframe>
+
+
+
+直接在HTML嵌入SVG代码
+
+
+在Firefox、Internet Explorer9、谷歌Chrome和Safari中，你可以直接在HTML嵌入SVG代码。
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+   <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+
+</svg>
+
+链接到SVG文件
+
+您还可以用<a>标签链接到一个SVG文件：链接到SVG文件
+
+
+
+您还可以用<a>标签链接到一个SVG文件：<a href="circle1.svg">View SVG file</a>
