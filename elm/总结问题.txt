@@ -300,7 +300,7 @@ mixins和普通情况下引入组件有什么区别
 
 10.1.什么是require.js?
 
-
+https://blog.csdn.net/NeXTSTEP110/article/details/77771086
 
 1)：require.js是一个js脚本加载器，它遵循AMD(Asynchronous Module Definition)规范，实现js脚本的异步加载，
 
@@ -388,9 +388,215 @@ require.js会先加载jQuery，然后再运行回调函数。main.js的代码就写在回调函数中。
 
 
 
+
 main.js的依赖模块是['jquery']。默认情况下，require.js会假定这个模块与main.js在同一个目录，
+
+
 
 文件名是 jquery.js，然后自动加载，除此之外，我们可以通过require.config()方法，
 
+
+
 我们可以对模块的加载行为进行自定义，require.config()就写在main.js的头部
+
 ，它的参数是一个对象，这个对象的paths属性指定各个模块的加载路径。
+
+
+
+11. transition使用
+
+https://www.cnblogs.com/ccyinghua/p/7872694.html
+
+<transition name="fade">
+
+    运动东西(元素，属性、路由....)
+
+</transition>
+
+class定义：
+
+
+
+.fade-enter{ } 进入过渡的开始状态，元素被插入时生效，只应用一帧后立即删除；(运动的初始状态)
+
+
+
+.fade-enter-active{ } 进入过渡的结束状态，元素被插入时就生效，在 transition/animation 完成之后移除。
+
+这个类可以被用来定义过渡的过程时间，延迟和曲线函数。
+
+
+
+.fade-leave{ } 离开过渡的开始状态，元素被删除时触发，只应用一帧后立即删除；
+
+
+
+.fade-leave-active{ } 离开过渡的结束状态，元素被删除时生效，在 transition/animation 完成之后移除。
+
+这个类可以被用来定义过渡的过程时间，延迟和曲线函数。
+
+二、自定义过度类名
+
+默认的.fade-enter变成.fade-in-enter;
+
+
+
+默认的.fade-enter-active变成.fade-in-active;
+
+
+
+默认的.fade-leave变成.fade-out-enter;
+
+
+
+默认的.fade-leave-active变成.fade-out-active;
+
+<transition 
+
+    name="fade"
+
+    enter-class="fade-in-enter"
+
+    enter-active-class="fade-in-active"
+
+    leave-class="fade-out-enter"
+
+    leave-active-class="fade-out-active"
+
+  >
+
+    <p v-show="show">hello</p>
+
+</transition>
+
+.fade-in-active, .fade-out-active{
+
+    transition: all 0.5s ease 
+
+} 
+
+.fade-in-enter, .fade-out-active{
+
+     opacity: 0 
+
+}
+
+三、transition相关函数
+
+<transition name="fade"
+
+    @before-enter="beforeEnter"
+
+    @enter="enter"
+
+    @after-enter="afterEnter"
+
+    @before-leave="beforeLeave"
+
+    @leave="leave"
+
+    @after-leave="afterLeave"
+
+>
+
+    <p v-show="show"></p>
+
+</transition>
+
+methods:{
+
+    beforeEnter(el){
+
+        console.log('动画enter之前');
+
+    },
+
+    enter(el){
+
+        console.log('动画enter进入');
+
+    },
+
+    afterEnter(el){
+
+        console.log('动画进入之后');
+
+        el.style.background="blue";
+
+    },
+
+    beforeLeave(el){
+
+        console.log('动画leave之前');
+
+    },
+
+    leave(el){
+
+        console.log('动画leave');
+
+    },
+
+    afterLeave(el){
+
+        console.log('动画leave之后');
+
+        el.style.background="red";
+
+    }
+
+}
+
+四、transition结合animate.css使用。
+
+<transition enter-active-class="zoomInLeft" leave-active-class="zoomOutRight">
+
+        <p v-show="show" class="animated"></p>
+
+</transition>
+
+或者
+
+<transition enter-active-class="animated zoomInLeft" leave-active-class="animated zoomOutRight">
+
+        <p v-show="show"></p>
+
+</transition>
+
+五、多个元素运动
+
+<!-- key一般是循环遍历出来的 -->
+
+<transition-group enter-active-class="zoomInLeft" leave-active-class="zoomOutRight">
+
+      <p v-show="show" :key=""></p>
+
+      <p v-show="show" :key=""></p>
+
+</transition-group>
+
+12.
+ vue路由跳转 返回上一级 this.$router.go(-1) 和返回到指定页面this.$router.push('/home')
+
+1，点击返回上一页
+
+<button @click="goback">goback</button>
+
+methods:{
+
+  goback(){}
+
+  this.$router.go(-1)
+
+}
+
+2，点击跳转到/Foo2页面
+
+<button @click="ToLink1">goback</button>
+
+ToLink1(){
+
+  this.$router.push('/foo2') 最常用
+
+或者this.$router.push({name:'Foo1'})对象的方法
+ 
