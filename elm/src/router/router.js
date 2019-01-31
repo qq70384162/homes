@@ -25,13 +25,18 @@ const find = r => require.ensure([], () => r(require('../page/find/find')), 'fin
 const download = r => require.ensure([], () => r(require('../page/download/download')), 'download')
 const food = r => require.ensure([], () => r(require('../page/food/food')), 'food')
 const points = r => require.ensure([], () => r(require('../page/points/points')), 'points')
-// const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
-// const orderDetail = r => require.ensure([], () => r(require('../page/order/children/orderDetail')), 'orderDetail')
+const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
+const orderDetail = r => require.ensure([], () => r(require('../page/order/children/orderDetail')), 'orderDetail')
 const benefit = r => require.ensure([], () => r(require('../page/benefit/benefit')), 'benefit')
 const forget = r => require.ensure([], () => r(require('../page/forget/forget')), 'forget')
 const balance = r => require.ensure([], () => r(require('../page/balance/balance')), 'balance')
 const balanceDetail = r => require.ensure([], () => r(require('../page/balance/children/detail')), 'balanceDetail')
 const pointsDetail = r => require.ensure([], () => r(require('../page/points/children/detail')), 'pointsDetail')
+const shop = r => require.ensure([], () => r(require('../page/shop/shop')), 'shop')
+const foodDetail = r => require.ensure([], () => r(require('../page/shop/children/foodDetail')), 'foodDetail')
+const shopDetail = r => require.ensure([], () => r(require('../page/shop/children/shopDetail')), 'shopDetail')
+const shopSafe = r => require.ensure([], () => r(require('../page/shop/children/children/shopSafe')), 'shopSafe')
+
 export default [{
     path: '/',
     component: App, //顶层路由，对应index.html
@@ -51,6 +56,11 @@ export default [{
             path: '/login',
             component: login
         },
+        //特色商铺列表页
+        {
+            path: '/food',
+            component: food
+        },
           //当前选择城市页
           {
             path: '/city/:cityid',
@@ -66,6 +76,22 @@ export default [{
         {
             path: '/search/:geohash',
             component: search
+        },
+         //商铺详情页
+         {
+            path: '/shop',
+            component: shop,
+            children: [{
+                path: 'foodDetail', //食品详情页
+                component: foodDetail,
+            }, {
+                path: 'shopDetail', //商铺详情页
+                component: shopDetail,
+                children: [{
+                    path: 'shopSafe', //商铺安全认证页
+                    component: shopSafe,
+                }, ]
+            }]
         },
         //个人信息页
         {
@@ -95,6 +121,7 @@ export default [{
                 component: service,
             },]
         },
+        
           //确认订单页
           {
             path: '/confirmOrder',
@@ -130,14 +157,14 @@ export default [{
             component: forget
         },
          //订单列表页
-        //  {
-        //     path: '/order',
-        //     component: order,
-        //     children: [{
-        //         path: 'orderDetail', //订单详情页
-        //         component: orderDetail,
-        //     }, ]
-        // },
+         {
+            path: '/order',
+            component: order,
+            children: [{
+                path: 'orderDetail', //订单详情页
+                component: orderDetail,
+            }, ]
+        },
           //发现页
           {
             path: '/find',
