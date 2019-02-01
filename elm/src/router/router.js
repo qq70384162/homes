@@ -36,6 +36,10 @@ const shop = r => require.ensure([], () => r(require('../page/shop/shop')), 'sho
 const foodDetail = r => require.ensure([], () => r(require('../page/shop/children/foodDetail')), 'foodDetail')
 const shopDetail = r => require.ensure([], () => r(require('../page/shop/children/shopDetail')), 'shopDetail')
 const shopSafe = r => require.ensure([], () => r(require('../page/shop/children/children/shopSafe')), 'shopSafe')
+const vipcard = r => require.ensure([], () => r(require('../page/vipcard/vipcard')), 'vipcard')
+const invoiceRecord = r => require.ensure([], () => r(require('../page/vipcard/children/invoiceRecord')), 'invoiceRecord')
+const useCart = r => require.ensure([], () => r(require('../page/vipcard/children/useCart')), 'useCart')
+const vipDescription = r => require.ensure([], () => r(require('../page/vipcard/children/vipDescription')), 'vipDescription')
 
 export default [{
     path: '/',
@@ -164,6 +168,21 @@ export default [{
                 path: 'orderDetail', //订单详情页
                 component: orderDetail,
             }, ]
+        },
+          //vip卡页
+          {
+            path: '/vipcard',
+            component: vipcard,
+            children: [{
+                path: 'invoiceRecord', //开发票
+                component: invoiceRecord,
+            }, {
+                path: 'useCart', //购买会员卡
+                component: useCart,
+            }, {
+                path: 'vipDescription', //会员说明
+                component: vipDescription,
+            },]
         },
           //发现页
           {
